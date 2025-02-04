@@ -10,6 +10,9 @@ The Wine Quality Analyzer helps assess the quality of wine based on key characte
 Features:
 
 Elegant Design: A visually appealing and easy-to-use interface.
+
 Quality Assessment: Analyzes important wine characteristics to provide useful insights.
+
 User-Friendly: Simple navigation for a smooth experience.
+
 Get Started: Begin your wine analysis with just one click.
