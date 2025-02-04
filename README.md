@@ -1,7 +1,9 @@
 # wine-quality
 Wine Quality Prediction:
+
 Demo: https://www.loom.com/share/9d5633b227ab40eba6b5734163b4063b?sid=2d717fa4-0162-43ac-a11e-19dd0e20d481 
-         Content:
+
+Content:
 
 The Wine Quality Analyzer helps assess the quality of wine based on key characteristics. It provides a simple and effective way to understand different wine varieties and their features.
 
