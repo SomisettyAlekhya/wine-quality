@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wine Quality Analyzer</title>
+    <style>
+        /* Base styles for body and font */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #1e1e2f, #3d1e6d, #9b287b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            color: white;
+            transition: background-color 0.3s ease;
+            flex-direction: column;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #ffcc70;
+            text-shadow: 2px 2px 10px rgba(255, 63, 63, 0.6);
+            animation: pulseGlow 2s ease-in-out infinite alternate;
+        }
+
+        /* Pulse Glow Animation */
+        @keyframes pulseGlow {
+            0% { text-shadow: 2px 2px 10px rgba(255, 63, 63, 0.6); }
+            100% { text-shadow: 4px 4px 20px rgba(255, 63, 63, 1); }
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin: 15px 0;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            background: linear-gradient(90deg, #ff3f3f, #ff9a3f);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 63, 63, 0.5);
+        }
+
+        button:hover {
+            background: linear-gradient(90deg, #d72c2c, #ff7a3f);
+            transform: scale(1.1);
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Toggle Button for Theme Change */
+        .toggle-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            background: #ff3f3f;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+            box-shadow: 0 5px 15px rgba(255, 63, 63, 0.4);
+            transition: background 0.3s ease;
+            display: inline-block;
+        }
+
+        .toggle-btn:hover {
+            background: #d72c2c;
+        }
+
+        /* Light Theme Styles */
+        .light-theme {
+            background: linear-gradient(45deg, #ffdfdf, #f0e68c, #9b287b);
+        }
+
+        /* Animating the toggle button */
+        @keyframes slideIn {
+            from {
+                right: -100px;
+                opacity: 0;
+            }
+            to {
+                right: 20px;
+                opacity: 1;
+            }
+        }
+
+        .toggle-btn {
+            animation: slideIn 1s ease-out;
+        }
+
+        /* Video styling */
+        video {
+            width: 80%;  /* Set the video width to 80% of the container */
+            height: auto;  /* Automatically adjust height to maintain aspect ratio */
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            margin-top: 30px;
+            transition: transform 0.3s ease;
+        }
+
+        video:hover {
+            transform: scale(1.05);
+        }
+
+        /* Animation for rotating 'R' */
+        @keyframes rotateR {
+            0% {
+                transform: rotate(0deg);
+            }
+            50% {
+                transform: rotate(180deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .rotate-r-btn span {
+            display: inline-block;
+            animation: rotateR 2s linear infinite;
+        }
+
+        /* Animation for rotating container text */
+        @keyframes rotateText {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .rotate-text {
+            animation: rotateText 2s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-to-rotate">WINE QUALITY ANALYZER</h1>
+        <p class="text-to-rotate">Step into the future of wine evaluation, where <strong>data science</strong> meets <strong>refined taste</strong> to assess the perfect sip.</p>
+        <p class="text-to-rotate">Unlock insights into every bottle, from bold reds to crisp whites, using our <strong>AI-driven</strong> predictive analysis.</p>
+        <button class="toggle-btn" onclick="toggleTheme()">Toggle Light/Dark Mode</button>
+        <!-- Video automatically starts playing -->
+        <video autoplay muted loop>
+            <source src="45979-447087665_medium.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+       
+        <button><a href="Wine_project.html">Start Analysis</a></button>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+        }
+
+        // Function to apply the rotation animation to the text
+        document.querySelector('.toggle-btn').addEventListener('click', function() {
+            const textElements = document.querySelectorAll('.text-to-rotate');
+            textElements.forEach(function(element) {
+                element.classList.add('rotate-text');
+                // Remove animation class after animation ends to allow re-triggering
+                element.addEventListener('animationend', function() {
+                    element.classList.remove('rotate-text');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

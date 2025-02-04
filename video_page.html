@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wine Quality Result</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- For the chart -->
+  <style>
+        body, html {
+          margin: 0;
+          padding: 0;
+          height: 100%;
+          overflow: hidden;
+          font-family: 'Arial', sans-serif;
+        }
+        h1 {
+          font-style: italic;
+          color: #fff;
+          margin: 0;
+          padding: 20px 0;
+          text-align: center;
+          text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+        }
+        .gif-container {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .overlay-text {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          font-size: 26px;
+          color: white;
+          text-align: center;
+          background-color: rgba(0, 0, 0, 0.6);
+          padding: 20px;
+          border-radius: 10px;
+          margin-top: 20%;
+          font-weight: bold;
+          transition: opacity 0.5s ease;
+          opacity: 1;
+        }
+        .form-container {
+          display: none;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 60%;
+          max-width: 450px;
+          background-color: #f4f4f4;
+          padding-left: 30px;
+          padding-right: 30px;
+          padding-top: 40px;
+          padding-bottom: 70px;
+          border-radius: 15px;
+          box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+          background: linear-gradient(180deg, #ab59bb, 30%, #ff7f50, 70%, #03a9f4);
+        }
+        button {
+          background-color: #3498db; /* New blue background */
+          font-weight: bold;
+          color: white;
+          border: none;
+          cursor: pointer;
+          display: block;
+          margin-top: 20px;
+          width: 100%;
+          padding-top: 12px;
+          padding-bottom: 12px;
+          font-size: 1rem;
+        }
+        button:hover {
+          background-color: #2980b9; /* Darker blue for hover */
+        }
+        #result {
+          font-size: 1.6rem;
+          margin-top: 20px;
+          font-weight: bold;
+        }
+        #qualityChart {
+          max-width: 400px;
+          margin-top: 30px;
+        }
+        .good {
+          color: #2b8b44;
+        }
+        .moderate {
+          color: #ff9f00;
+        }
+        .bad {
+          color: #d9001c;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="gif-container">
+      <img id="gifImage" class="gif-image" src="video_page.gif" alt="GIF Image" width="100%" height="100%">
+      <div class="overlay-text">Our best minds are working on it.</div>
+    </div>
+
+    <div id="formContainer" class="form-container">
+        <h1 id="typingEffect"></h1><br>
+        <div id="predictedQuality"></div><br>
+        <button onclick="goBack()">Go Back</button>
+        <div id="result"></div>
+        <canvas id="qualityChart"></canvas>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const text = '  Wine Quality Result  ';
+            const element = document.getElementById('typingEffect');
+            typeWithCustomSymbol(element, text, 0);
+
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const predictedQuality = parseFloat(urlParams.get('predictedQuality'));
+
+            if (predictedQuality) {
+                const predictedQualityContainer = document.getElementById('predictedQuality');
+                predictedQualityContainer.innerText = `Predicted Quality: ${predictedQuality.toFixed(2)}`;
+
+                // Categorizing the quality
+                let qualityCategory;
+                if (predictedQuality >= 7.5) {
+                    qualityCategory = 'Good';
+                } else if (predictedQuality >= 5) {
+                    qualityCategory = 'Moderate';
+                } else {
+                    qualityCategory = 'Bad';
+                }
+
+                const resultContainer = document.getElementById('result');
+                resultContainer.innerHTML = `<b class="${qualityCategory.toLowerCase()}">Quality: ${qualityCategory}</b>`;
+
+                // Create a bar chart for quality visualization
+                createQualityChart(predictedQuality);
+            }
+
+            setTimeout(function () {
+                document.querySelector('.overlay-text').style.opacity = 0;
+                document.getElementById('formContainer').style.display = 'block';
+            }, 5000); // 5000 milliseconds = 5 seconds
+        });
+
+        function typeWithCustomSymbol(element, text, index) {
+            if (index >= 0 && index <= text.length) {
+                const newText = `❀ ${text.slice(0, index)} ❀`;
+                element.innerText = newText;
+                index++;
+                setTimeout(function () {
+                    typeWithCustomSymbol(element, text, index);
+                }, 100); // Typing speed in milliseconds
+            }
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        function createQualityChart(predictedQuality) {
+            const ctx = document.getElementById('qualityChart').getContext('2d');
+            const qualityCategory = predictedQuality >= 7.5 ? 'Good' : predictedQuality >= 5 ? 'Moderate' : 'Bad';
+
+            const backgroundColors = {
+                'Good': 'brown', 
+                'Moderate': 'green', 
+                'Bad': 'purple' 
+            };
+
+            const borderColors = {
+                'Good': 'brown',
+                'Moderate': 'green', 
+                'Bad': 'purple' 
+            };
+
+            // Set the label colors to white for better visibility
+            const labelColor = 'rgba(255, 255, 255, 1)';
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Quality'],
+                    datasets: [{
+                        label: 'Predicted Quality Score',
+                        data: [predictedQuality],
+                        backgroundColor: backgroundColors[qualityCategory],
+                        borderColor: borderColors[qualityCategory],
+                        borderWidth: 2,
+                        barThickness: 30
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    animation: {
+                        duration: 1000, // smooth transition
+                        easing: 'easeOutBounce'
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10,
+                            ticks: {
+                                color: labelColor // Set the color of the y-axis labels
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: labelColor // Set the color of the x-axis labels
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: labelColor // Set the color of the legend labels
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
